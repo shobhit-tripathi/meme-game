@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('#game-board');
     const startButton = document.getElementById('start-game');
+    const themeToggle = document.getElementById('theme-toggle');
     let cardsChosen = [];
     let cardsChosenId = [];
     let cardsWon = [];
 
+    // Array of card objects
     const cardArray = [
         { name: 'card1', img: 'images/distracted.png' },
         { name: 'card1', img: 'images/distracted.png' },
@@ -19,10 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // ...add more pairs as needed
     ];
 
+    // Shuffle function for randomizing cards
     function shuffle(array) {
         array.sort(() => 0.5 - Math.random());
     }
 
+    // Create the game board
     function createBoard() {
         shuffle(cardArray);
         grid.innerHTML = '';
@@ -32,11 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('img');
             card.setAttribute('src', 'images/blank.png');
             card.setAttribute('data-id', i);
+            card.classList.add('card');
             card.addEventListener('click', flipCard);
             grid.appendChild(card);
         }
     }
 
+    // Flip a card and check for matches
     function flipCard() {
         let cardId = this.getAttribute('data-id');
         if (!cardsChosenId.includes(cardId)) {
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Check if two flipped cards match
     function checkForMatch() {
         const cards = document.querySelectorAll('#game-board img');
         const firstCardId = cardsChosenId[0];
@@ -68,10 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
         cardsChosen = [];
         cardsChosenId = [];
 
+        // Check if all pairs are found
         if (cardsWon.length === cardArray.length / 2) {
             alert('Congratulations! You found them all!');
         }
     }
 
+    // Toggle between dark and light mode
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+    }
+
+    // Event listeners for start button and theme toggle
     startButton.addEventListener('click', createBoard);
+    themeToggle.addEventListener('click', toggleTheme);
 });
